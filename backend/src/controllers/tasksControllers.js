@@ -1,15 +1,62 @@
-export const getAllTasks = (req, res) => {
-  res.status(200).send("Bạn có 1 task cần làm!");
+import Task from "../models/Task.js";
+
+export const getAllTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find().sort({ createdAt: "desc" });
+    res.status(200).json(tasks);
+  } catch (error) {
+    console.error("Lỗi xảy ra khi gọi getAllTasks", error);
+    res.status(500).json({ message: "Lỗi xảy ra" });
+  }
 };
 
-export const createTask = (req, res) => {
-  res.status(201).json({ message: "Thêm task thành công!" });
+export const createTask = async (req, res) => {
+  try {
+    const { title } = req.body;
+
+    const task = new Task({ title });
+    const newTask = await task.save();
+
+    res.status(201).json(newTask);
+  } catch (error) {
+    console.error("Lỗi xảy ra khi tạo task", error);
+    res.status(500).json({ message: "Lỗi xảy ra" });
+  }
 };
 
-export const updateTask = (req, res) => {
-  res.status(200).json({ message: "Thay đổi task thành công!" });
+export const updateTask = async (req, res) => {
+  try {
+    const { title, status, completedAt } = req.body;
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      {
+        title,
+        status,
+        completedAt,
+      },
+      { new: true },
+    );
+
+    if (!updatedTask)
+      res.status(404).json({ message: "Task không tồn tại..." });
+
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    console.error("Lỗi xảy ra khi tạo task", error);
+    res.status(500).json({ message: "Lỗi xảy ra" });
+  }
 };
 
-export const deleteTask = (req, res) => {
-  res.status(200).json({ message: "Xóa task thành công!" });
+export const deleteTask = async (req, res) => {
+  try {
+    const deleteTask = await Task.findByIdAndDelete(req.params.id);
+
+    if (!deleteTask)
+      return res.status(404).json({ message: "Task không tồn tại..." });
+
+    res.status(200).json(deleteTask);
+  } catch (error) {
+    console.log("Lỗi khi gọi deleteTask");
+    res.status(200).json({ message: "Xóa task thành công!" });
+  }
 };
