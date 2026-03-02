@@ -10,7 +10,7 @@ const TaskCard = ({ task, index }) => {
   return (
     <Card
       className={cn(
-        "p-4 border-0 shadow hover:shadow-lg transition-all duration-200 animate-fade-in group",
+        "p-4 rounded-lg border-0 shadow transition-all duration-200 animate-fade-in group",
         task.status === FilterType.completed && "opacity-75",
       )}
       style={{ animationDelay: `${index * 50}ms` }}
@@ -77,10 +77,14 @@ const TaskCard = ({ task, index }) => {
 
         {/* Actions */}
         <div className="flex item-center gap-2">
-          <Button size="icon">
+          <Button size="icon" className={"cursor-pointer"}>
             <Pencil className="size-4" />
           </Button>
-          <Button variant="destructive" size="icon">
+          <Button
+            variant="destructive"
+            size="icon"
+            className={"cursor-pointer"}
+          >
             <Trash className="size-4" />
           </Button>
         </div>

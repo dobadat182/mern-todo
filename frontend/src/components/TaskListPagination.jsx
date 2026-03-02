@@ -1,7 +1,5 @@
-import React from "react";
-
 const TaskListPagination = () => {
-  return <div>TaskListPagination</div>;
+  return <>Pagition</>;
 };
 
 export default TaskListPagination;

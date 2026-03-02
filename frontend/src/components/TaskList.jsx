@@ -26,7 +26,7 @@ const TaskList = () => {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 my-7">
       {filteredTasks.map((task, index) => {
         return <TaskCard key={task._id ?? index} task={task} index={index} />;
       })}

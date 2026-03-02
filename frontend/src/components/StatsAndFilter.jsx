@@ -4,6 +4,7 @@ import { FilterType } from "@/lib/data";
 import { Button } from "./ui/button";
 import { ButtonGroup } from "./ui/button-group";
 import { Separator } from "./ui/separator";
+import { cn } from "@/lib/utils";
 
 const StatsAndFilter = ({
   activeTasks = 0,
@@ -28,11 +29,14 @@ const StatsAndFilter = ({
         </Badge>
       </div>
       {/* Lọc */}
-      <ButtonGroup>
-        {Object.keys(FilterType).map((type) => (
+      <ButtonGroup className={"border rounded-lg"}>
+        {Object.keys(FilterType).map((type, index) => (
           <Button
             key={type}
-            className={type === filter ? "bg-black text-white" : ""}
+            variant={`${index !== 0 ? "ghost" : "default"}`}
+            className={cn(
+              `cursor-pointer,  ${type === filter ? "bg-black text-white" : ""}`,
+            )}
           >
             <span>{FilterType[type]}</span>
           </Button>
