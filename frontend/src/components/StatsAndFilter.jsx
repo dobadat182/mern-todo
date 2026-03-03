@@ -1,19 +1,20 @@
-import { FilterIcon } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { FilterType } from "@/lib/data";
 import { Button } from "./ui/button";
 import { ButtonGroup } from "./ui/button-group";
-import { Separator } from "./ui/separator";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
-const StatsAndFilter = ({
-  activeTasks = 0,
-  completedTasks = 0,
-  filter = "all",
-}) => {
+const StatsAndFilter = ({ activeTasks = 0, completedTasks = 0 }) => {
+  const [filter, setFilter] = useState("all");
+
+  const handleFilter = (type) => {
+    setFilter(type);
+  };
+
   return (
     <div className="flex justify-between items-center">
-      {/* Thống kê */}
+      {/* Statistics */}
       <div className="flex gap-3">
         <Badge
           variant="secondary"
@@ -28,14 +29,17 @@ const StatsAndFilter = ({
           {completedTasks} {FilterType.completed}
         </Badge>
       </div>
-      {/* Lọc */}
+
+      {/* Filters */}
       <ButtonGroup className={"border rounded-lg"}>
         {Object.keys(FilterType).map((type, index) => (
           <Button
+            onClick={() => handleFilter(type)}
             key={type}
-            variant={`${index !== 0 ? "ghost" : "default"}`}
+            variant={`${type !== filter ? "ghost" : "default"}`}
             className={cn(
-              `cursor-pointer,  ${type === filter ? "bg-black text-white" : ""}`,
+              "cursor-pointer",
+              type === filter && "bg-black text-white",
             )}
           >
             <span>{FilterType[type]}</span>
