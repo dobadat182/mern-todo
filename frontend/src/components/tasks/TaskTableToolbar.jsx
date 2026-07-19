@@ -1,15 +1,18 @@
-import { IconAdjustmentsHorizontal, IconCirclePlus } from "@tabler/icons-react";
+import { IconCirclePlus } from "@tabler/icons-react"
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
-export function TaskTableToolbar() {
+import { ViewModeToggle } from "./ViewModeToggle"
+
+export function TaskTableToolbar({ viewMode, onViewModeChange }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex flex-1 flex-wrap items-center gap-2">
         <Input
           placeholder="Filter tasks..."
           className="h-8 w-full max-w-xs lg:max-w-sm"
+          readOnly
         />
         <Button
           type="button"
@@ -31,10 +34,10 @@ export function TaskTableToolbar() {
         </Button>
       </div>
       <div className="flex items-center gap-2">
-        <Button type="button" variant="outline" size="sm">
-          <IconAdjustmentsHorizontal data-icon="inline-start" />
-          View
-        </Button>
+        <ViewModeToggle
+          viewMode={viewMode}
+          onViewModeChange={onViewModeChange}
+        />
         <Button
           type="button"
           size="sm"
@@ -44,5 +47,5 @@ export function TaskTableToolbar() {
         </Button>
       </div>
     </div>
-  );
+  )
 }
