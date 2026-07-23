@@ -1,7 +1,7 @@
-import { TaskDashboard } from "@/components/tasks/TaskDashboard"
+import { TaskDashboard } from "@/features/tasks";
 
 function App() {
-  return <TaskDashboard />
+  return <TaskDashboard />;
 }
 
-export default App
+export default App;
