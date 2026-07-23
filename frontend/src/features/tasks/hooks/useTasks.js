@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { fetchTasks } from "../api/tasksApi";
+import { createTask as createTaskRequest, fetchTasks } from "../api/tasksApi";
 
 export function useTasks({ filter = "all" } = {}) {
   const [tasks, setTasks] = useState([]);
@@ -32,5 +32,11 @@ export function useTasks({ filter = "all" } = {}) {
     return () => controller.abort();
   }, [filter]);
 
-  return { tasks, loading, error };
+  async function createTask(payload) {
+    const task = await createTaskRequest(payload);
+    setTasks((prev) => [task, ...prev]);
+    return task;
+  }
+
+  return { tasks, loading, error, createTask };
 }

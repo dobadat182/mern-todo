@@ -23,3 +23,19 @@ export async function fetchTasks({ filter = "all", signal } = {}) {
     completeCount: data.completeCount ?? 0,
   };
 }
+
+export async function createTask(payload) {
+  const response = await fetch(BASE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.message || `Không thể tạo task (${response.status})`);
+  }
+
+  const task = await response.json();
+  return normalizeTasks([task])[0];
+}

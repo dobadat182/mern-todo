@@ -53,8 +53,18 @@ export const getAllTasks = async (req, res) => {
 
 export const createTask = async (req, res) => {
   try {
-    const { title } = req.body;
-    const task = new Task({ title });
+    const { title, description, label, priority } = req.body;
+
+    if (!title?.trim()) {
+      return res.status(400).json({ message: "Title là bắt buộc" });
+    }
+
+    const task = new Task({
+      title: title.trim(),
+      description,
+      label,
+      priority,
+    });
 
     const newTask = await task.save();
     res.status(201).json(newTask);
