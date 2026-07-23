@@ -2,8 +2,8 @@ import { TableCell, TableRow } from "@/components/ui/table";
 
 import TableItem from "./table-item";
 
-export default function TableList({ tasks }) {
-  if (tasks.length === 0) {
+export default function TableList({ data }) {
+  if (data.length === 0) {
     return (
       <TableRow>
         <TableCell
@@ -16,7 +16,7 @@ export default function TableList({ tasks }) {
     );
   }
 
-  return tasks.map((task, index) => (
-    <TableItem key={task.id} task={task} index={index} />
+  return data.tasks.map((task, index) => (
+    <TableItem key={task._id} task={task} index={index} />
   ));
 }

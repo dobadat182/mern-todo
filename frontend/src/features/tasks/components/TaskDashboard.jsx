@@ -1,33 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import { useTasks } from "../hooks/useTasks";
 import { TaskHeader } from "./TaskHeader";
 import { TaskKanban } from "./kanban/TaskKanban";
 import { TaskTable } from "./table/task-table";
 import { TaskToolbar } from "./toolbar/TaskToolbar";
+import axios from "axios";
 
 export function TaskDashboard() {
   const [viewMode, setViewMode] = useState("table");
-  const { tasks, loading, error, createTask } = useTasks();
+  const [dataBuffer, setDataBuffer] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchTasks = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get("http://localhost:5001/api/tasks");
+      setDataBuffer(res.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+    console.log("dataBuffer", dataBuffer);
+  }, []);
 
   return (
     <div className="min-h-svh bg-muted/40 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto w-full space-y-6">
         <TaskHeader />
-        <TaskToolbar
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
-          onCreateTask={createTask}
-        />
+        <TaskToolbar viewMode={viewMode} onViewModeChange={setViewMode} />
 
-        {loading ? (
-          <p className="text-sm text-muted-foreground">Đang tải tasks...</p>
-        ) : error ? (
-          <p className="text-sm text-destructive">{error}</p>
-        ) : viewMode === "table" ? (
-          <TaskTable tasks={tasks} />
+        {viewMode === "table" ? (
+          <TaskTable data={dataBuffer} loading={loading} />
         ) : (
-          <TaskKanban tasks={tasks} />
+          // <TaskKanban tasks={dataBuffer} />
+          <p className="text-sm text-muted-foreground">
+            Không có view mode này
+          </p>
         )}
       </div>
     </div>

@@ -5,9 +5,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableCell,
 } from "@/components/ui/table";
 
 import TableList from "./table-list";
+import { IconLoader2 } from "@tabler/icons-react";
 
 function TaskTableHeader() {
   return (
@@ -18,22 +20,32 @@ function TaskTableHeader() {
         </TableHead>
         <TableHead className="w-25">Task</TableHead>
         <TableHead>Title</TableHead>
-        <TableHead className="w-35">Description</TableHead>
+        <TableHead className="w-96">Description</TableHead>
         <TableHead className="w-25">Status</TableHead>
         <TableHead className="w-25">Priority</TableHead>
-        <TableHead className="w-10" />
+        <TableHead className="w-12" />
       </TableRow>
     </TableHeader>
   );
 }
 
-export function TaskTable({ tasks }) {
+export function TaskTable({ data, loading }) {
   return (
     <div className="overflow-hidden rounded-lg border">
       <Table>
         <TaskTableHeader />
         <TableBody>
-          <TableList tasks={tasks} />
+          {loading ? (
+            <TableRow>
+              <TableCell colSpan={7} className="py-8 px-3 text-center">
+                <div className="flex items-center justify-center">
+                  <IconLoader2 className="size-6 animate-spin" />
+                </div>
+              </TableCell>
+            </TableRow>
+          ) : (
+            <TableList data={data} />
+          )}
         </TableBody>
       </Table>
     </div>

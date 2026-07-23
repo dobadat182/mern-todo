@@ -1,4 +1,4 @@
-import { CreateTaskDialog } from "./CreateTaskDialog";
+import { CreateNewTask } from "./CreateNewTask";
 import { TaskFilters } from "./TaskFilters";
 import { ViewModeToggle } from "./ViewModeToggle";
 
@@ -11,7 +11,7 @@ export function TaskToolbar({ viewMode, onViewModeChange, onCreateTask }) {
           viewMode={viewMode}
           onViewModeChange={onViewModeChange}
         />
-        <CreateTaskDialog onCreateTask={onCreateTask} />
+        <CreateNewTask />
       </div>
     </div>
   );
