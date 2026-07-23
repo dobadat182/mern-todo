@@ -21,7 +21,9 @@ export function useTasks({ filter = "all" } = {}) {
         if (err.name === "AbortError") return;
         setError(err.message || "Không thể tải tasks");
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
 
