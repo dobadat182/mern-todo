@@ -49,7 +49,9 @@ export function useTasks({ filter = "all" } = {}) {
 
   async function deleteTask(id) {
     await deleteTaskRequest(id);
-    setTasks((prev) => prev.filter((task) => task.id !== id && task._id !== id));
+    setTasks((prev) =>
+      prev.filter((task) => task.id !== id && task._id !== id),
+    );
   }
 
   return { tasks, loading, error, createTask, deleteTask };

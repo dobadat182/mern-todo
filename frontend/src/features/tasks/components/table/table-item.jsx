@@ -50,7 +50,7 @@ export default function TableItem({ task, index, onDeleteTask }) {
           {task.description || ""}
         </span>
       </TableCell>
-      <TableCell>
+      <TableCell className="min-w-52">
         <TaskStatus status={task.status} />
       </TableCell>
       <TableCell>
