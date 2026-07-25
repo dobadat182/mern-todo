@@ -11,7 +11,7 @@ export function TaskTypeBadge({ label }) {
 }
 
 export function TaskStatus({ status }) {
-  const config = STATUS_CONFIG[status] ?? STATUS_CONFIG.active;
+  const config = STATUS_CONFIG[status] ?? STATUS_CONFIG.todo;
   const Icon = config.icon;
 
   return (

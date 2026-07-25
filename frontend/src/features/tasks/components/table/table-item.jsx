@@ -1,10 +1,8 @@
-import { TableCell, TableRow } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
-import { TaskPriority, TaskStatus, TaskTypeBadge } from "../shared/TaskMeta";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Popover,
   PopoverContent,
@@ -13,9 +11,26 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { TableCell, TableRow } from "@/components/ui/table";
 
-export default function TableItem({ task, index }) {
+import { TaskPriority, TaskStatus, TaskTypeBadge } from "../shared/TaskMeta";
+
+export default function TableItem({ task, index, onDeleteTask }) {
   const [open, setOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleDelete() {
+    setDeleting(true);
+    try {
+      await onDeleteTask(task.id ?? task._id);
+      setOpen(false);
+    } catch (error) {
+      console.error("Delete failed", error);
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   return (
     <TableRow>
       <TableCell className="px-3">
@@ -32,7 +47,7 @@ export default function TableItem({ task, index }) {
         <span
           className={!task.description ? "text-muted-foreground" : undefined}
         >
-          {task.description || "—"}
+          {task.description || ""}
         </span>
       </TableCell>
       <TableCell>
@@ -43,32 +58,28 @@ export default function TableItem({ task, index }) {
       </TableCell>
       <TableCell>
         <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger render={<Button variant="outline" />}>
+          <PopoverTrigger render={<Button variant="outline" size="icon-sm" />}>
             <IconTrash className="size-4" />
           </PopoverTrigger>
           <PopoverContent align="end" className="w-80">
             <PopoverHeader>
-              <PopoverTitle className="text-sm font-normal text-center">
-                Are you sure you want to delete ?
+              <PopoverTitle className="text-center text-sm font-normal">
+                Are you sure you want to delete?
               </PopoverTitle>
-              <PopoverDescription className="flex gap-2 mt-2 w-full">
+              <PopoverDescription className="mt-2 flex w-full gap-2">
                 <Button
                   variant="destructive"
                   className="flex-2"
-                  onClick={() => {
-                    console.log("delete");
-                    setOpen(false);
-                  }}
+                  disabled={deleting}
+                  onClick={handleDelete}
                 >
-                  Delete
+                  {deleting ? "Deleting..." : "Delete"}
                 </Button>
                 <Button
                   variant="outline"
                   className="flex-1"
-                  onClick={() => {
-                    console.log("cancel");
-                    setOpen(false);
-                  }}
+                  disabled={deleting}
+                  onClick={() => setOpen(false)}
                 >
                   Cancel
                 </Button>

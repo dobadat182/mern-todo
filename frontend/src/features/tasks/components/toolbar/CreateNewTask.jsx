@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,19 +13,50 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { IconPlus } from "@tabler/icons-react";
 
-export function CreateNewTask() {
-  function handleSubmit(e) {
-    e.preventDefault();
+export function CreateNewTask({ onCreateTask }) {
+  const [open, setOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
-    const formData = new FormData(e.target);
-    const title = formData.get("title");
-    const description = formData.get("description");
-
-    console.log(title, description);
+  function handleOpenChange(nextOpen) {
+    setOpen(nextOpen);
+    if (!nextOpen) setError(null);
   }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError(null);
+
+    const formData = new FormData(event.target);
+    const title = String(formData.get("title") || "").trim();
+    const description = String(formData.get("description") || "").trim();
+
+    if (!title) {
+      setError("Title là bắt buộc");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await onCreateTask({
+        title,
+        description: description || undefined,
+      });
+      event.target.reset();
+    } catch (err) {
+      setError(err.message || "Không thể tạo task");
+    } finally {
+      setTimeout(() => {
+        setOpen(false);
+        setSubmitting(false);
+      }, 1000);
+    }
+  }
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger
         render={
           <Button
@@ -33,12 +66,13 @@ export function CreateNewTask() {
           />
         }
       >
-        Add Task
+        <IconPlus data-icon="inline-start" />
+        Create New Task
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold mb-0">
+          <DialogTitle className="mb-0 text-lg font-bold">
             Create New Task
           </DialogTitle>
           <DialogDescription>
@@ -57,6 +91,7 @@ export function CreateNewTask() {
                   placeholder="e.g. Fix login bug"
                   autoFocus
                   required
+                  disabled={submitting}
                 />
               </Field>
 
@@ -66,16 +101,30 @@ export function CreateNewTask() {
                   id="task-description"
                   name="description"
                   placeholder="Optional details"
+                  disabled={submitting}
                 />
               </Field>
             </FieldGroup>
           </FieldSet>
 
-          <DialogFooter>
-            <DialogClose render={<Button type="button" variant="outline" />}>
+          {error ? <p className="text-sm text-destructive">{error}</p> : null}
+
+          <DialogFooter className="flex">
+            <Button type="submit" disabled={submitting} className="flex-2">
+              {submitting ? "Creating..." : "Create Task"}
+            </Button>
+            <DialogClose
+              render={
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={submitting}
+                  className="flex-1"
+                />
+              }
+            >
               Cancel
             </DialogClose>
-            <Button type="submit">Create Task</Button>
           </DialogFooter>
         </form>
       </DialogContent>

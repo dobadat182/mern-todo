@@ -35,7 +35,10 @@ export const getAllTasks = async (req, res) => {
         $facet: {
           tasks: [{ $sort: { createdAt: -1 } }],
           activeCount: [{ $match: { status: "active" } }, { $count: "count" }],
-          completeCount: [{ $match: { status: "complete" } }, { $count: "count" }],
+          completeCount: [
+            { $match: { status: "completed" } },
+            { $count: "count" },
+          ],
         },
       },
     ]);
@@ -84,7 +87,7 @@ export const updateTask = async (req, res) => {
         status,
         completedAt,
       },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedTask) {

@@ -1,20 +1,20 @@
-import { IconArrowDown, IconArrowRight, IconArrowUp } from "@tabler/icons-react";
+import {
+  IconArrowDown,
+  IconArrowRight,
+  IconArrowUp,
+} from "@tabler/icons-react";
 import {
   IconCircle,
   IconCircleCheck,
-  IconCircleX,
-  IconHelpCircle,
-  IconStopwatch,
+  IconList,
+  IconLoader2,
 } from "@tabler/icons-react";
 
 export const STATUS_CONFIG = {
-  active: { label: "Todo", icon: IconCircle },
-  complete: { label: "Done", icon: IconCircleCheck },
-  in_progress: { label: "In Progress", icon: IconStopwatch },
-  backlog: { label: "Backlog", icon: IconHelpCircle },
+  all: { label: "All", icon: IconList },
   todo: { label: "Todo", icon: IconCircle },
-  done: { label: "Done", icon: IconCircleCheck },
-  canceled: { label: "Canceled", icon: IconCircleX },
+  in_progress: { label: "In Progress", icon: IconLoader2 },
+  completed: { label: "Completed", icon: IconCircleCheck },
 };
 
 export const PRIORITY_CONFIG = {
@@ -26,5 +26,7 @@ export const PRIORITY_CONFIG = {
 
 export const KANBAN_COLUMNS = [
   { status: "active", title: "Todo", icon: IconCircle },
-  { status: "complete", title: "Done", icon: IconCircleCheck },
+  { status: "completed", title: "Completed", icon: IconCircleCheck },
 ];
+
+export const TASKS_PAGE_SIZE = 2;

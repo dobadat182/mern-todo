@@ -1,48 +1,45 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import { TASKS_PAGE_SIZE } from "../constants";
+import { useTasks } from "../hooks/useTasks";
 import { TaskHeader } from "./TaskHeader";
-import { TaskKanban } from "./kanban/TaskKanban";
 import { TaskTable } from "./table/task-table";
 import { TaskToolbar } from "./toolbar/TaskToolbar";
-import axios from "axios";
 
 export function TaskDashboard() {
   const [viewMode, setViewMode] = useState("table");
-  const [dataBuffer, setDataBuffer] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("all");
+  const { tasks, loading, error, createTask, deleteTask } = useTasks({
+    filter: "all",
+  });
 
-  const fetchTasks = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get("http://localhost:5001/api/tasks");
-      setDataBuffer(res.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    }
-  };
-
-  useEffect(() => {
-    fetchTasks();
-    console.log("dataBuffer", dataBuffer);
-  }, []);
+  const filteredTasks =
+    filter === "all" ? tasks : tasks.filter((task) => task.status === filter);
 
   return (
     <div className="min-h-svh bg-muted/40 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto w-full space-y-6">
         <TaskHeader />
-        <TaskToolbar viewMode={viewMode} onViewModeChange={setViewMode} />
+        <TaskToolbar
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          onCreateTask={createTask}
+          filter={filter}
+          onFilterChange={setFilter}
+        />
+
+        {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
         {viewMode === "table" ? (
-          <TaskTable data={dataBuffer} loading={loading} />
+          <TaskTable
+            tasks={filteredTasks}
+            loading={loading}
+            onDeleteTask={deleteTask}
+          />
         ) : (
-          // <TaskKanban tasks={dataBuffer} />
-          <p className="text-sm text-muted-foreground">
-            Không có view mode này
-          </p>
+          <div className="flex min-h-125 items-center justify-center rounded-xl border p-4">
+            <p className="text-muted-foreground">View mode in development...</p>
+          </div>
         )}
       </div>
     </div>

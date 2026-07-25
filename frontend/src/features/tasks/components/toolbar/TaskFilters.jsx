@@ -1,34 +1,38 @@
-import { IconCirclePlus } from "@tabler/icons-react";
-
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
-export function TaskFilters() {
+import { STATUS_CONFIG } from "../../constants";
+
+const FILTER_OPTIONS = Object.entries(STATUS_CONFIG).map(([value, config]) => ({
+  value,
+  label: config.label,
+  Icon: config.icon,
+}));
+
+export function TaskFilters({ filter = "all", onFilterChange }) {
   return (
     <div className="flex flex-1 flex-wrap items-center gap-2">
-      <Input
-        placeholder="Filter tasks..."
-        className="h-8 w-full max-w-xs lg:max-w-sm"
-        readOnly
-      />
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="border-dashed"
-      >
-        <IconCirclePlus data-icon="inline-start" />
-        Status
-      </Button>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="border-dashed"
-      >
-        <IconCirclePlus data-icon="inline-start" />
-        Priority
-      </Button>
+      {FILTER_OPTIONS.map(({ value, label, Icon }) => {
+        const isActive = filter === value;
+
+        return (
+          <Button
+            key={value}
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => onFilterChange(value)}
+            className={cn(
+              "gap-1.5 text-xs capitalize",
+              isActive &&
+                "bg-primary text-primary-foreground hover:bg-primary/90",
+            )}
+          >
+            <Icon className="size-3.5" aria-hidden />
+            {label}
+          </Button>
+        );
+      })}
     </div>
   );
 }

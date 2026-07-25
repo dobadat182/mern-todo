@@ -29,7 +29,7 @@ function TaskTableHeader() {
   );
 }
 
-export function TaskTable({ data, loading }) {
+export function TaskTable({ tasks, loading, onDeleteTask, rowOffset = 0 }) {
   return (
     <div className="overflow-hidden rounded-lg border">
       <Table>
@@ -37,14 +37,18 @@ export function TaskTable({ data, loading }) {
         <TableBody>
           {loading ? (
             <TableRow>
-              <TableCell colSpan={7} className="py-8 px-3 text-center">
+              <TableCell colSpan={7} className="px-3 py-8 text-center">
                 <div className="flex items-center justify-center">
                   <IconLoader2 className="size-6 animate-spin" />
                 </div>
               </TableCell>
             </TableRow>
           ) : (
-            <TableList data={data} />
+            <TableList
+              tasks={tasks}
+              onDeleteTask={onDeleteTask}
+              rowOffset={rowOffset}
+            />
           )}
         </TableBody>
       </Table>
