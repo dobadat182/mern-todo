@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { TASKS_PAGE_SIZE } from "../constants";
 import { useTasks } from "../hooks/useTasks";
 import { TaskHeader } from "./TaskHeader";
 import { TaskTable } from "./table/task-table";
@@ -9,9 +8,8 @@ import { TaskToolbar } from "./toolbar/TaskToolbar";
 export function TaskDashboard() {
   const [viewMode, setViewMode] = useState("table");
   const [filter, setFilter] = useState("all");
-  const { tasks, loading, error, createTask, deleteTask } = useTasks({
-    filter: "all",
-  });
+  const { tasks, loading, error, createTask, deleteTask, updateTask } =
+    useTasks();
 
   const filteredTasks =
     filter === "all" ? tasks : tasks.filter((task) => task.status === filter);
@@ -35,6 +33,7 @@ export function TaskDashboard() {
             tasks={filteredTasks}
             loading={loading}
             onDeleteTask={deleteTask}
+            onUpdateTask={updateTask}
           />
         ) : (
           <div className="flex min-h-125 items-center justify-center rounded-xl border p-4">

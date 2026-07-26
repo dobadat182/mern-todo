@@ -2,7 +2,12 @@ import { TableCell, TableRow } from "@/components/ui/table";
 
 import TableItem from "./table-item";
 
-export default function TableList({ tasks = [], onDeleteTask, rowOffset = 0 }) {
+export default function TableList({
+  tasks = [],
+  onDeleteTask,
+  onUpdateTask,
+  rowOffset = 0,
+}) {
   if (tasks.length === 0) {
     return (
       <TableRow>
@@ -22,6 +27,7 @@ export default function TableList({ tasks = [], onDeleteTask, rowOffset = 0 }) {
       task={task}
       index={rowOffset + index}
       onDeleteTask={onDeleteTask}
+      onUpdateTask={onUpdateTask}
     />
   ));
 }

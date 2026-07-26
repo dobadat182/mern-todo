@@ -4,6 +4,7 @@ import {
   createTask as createTaskRequest,
   deleteTask as deleteTaskRequest,
   fetchTasks,
+  updateTask as updateTaskRequest,
 } from "../api/tasksApi";
 
 export function useTasks({ filter = "all" } = {}) {
@@ -54,5 +55,15 @@ export function useTasks({ filter = "all" } = {}) {
     );
   }
 
-  return { tasks, loading, error, createTask, deleteTask };
+  async function updateTask(id, payload) {
+    const updated = await updateTaskRequest(id, payload);
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id || task._id === id ? { ...task, ...updated } : task,
+      ),
+    );
+    return updated;
+  }
+
+  return { tasks, loading, error, createTask, deleteTask, updateTask };
 }

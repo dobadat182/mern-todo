@@ -34,7 +34,14 @@ export const getAllTasks = async (req, res) => {
       {
         $facet: {
           tasks: [{ $sort: { createdAt: -1 } }],
-          activeCount: [{ $match: { status: "active" } }, { $count: "count" }],
+          activeCount: [
+            {
+              $match: {
+                status: { $in: ["todo", "in_progress", "active"] },
+              },
+            },
+            { $count: "count" },
+          ],
           completeCount: [
             { $match: { status: "completed" } },
             { $count: "count" },
@@ -79,16 +86,26 @@ export const createTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   try {
-    const { title, status, completedAt } = req.body;
-    const updatedTask = await Task.findByIdAndUpdate(
-      req.params.id,
-      {
-        title,
-        status,
-        completedAt,
-      },
-      { new: true },
-    );
+    const { title, description, status, completedAt } = req.body;
+
+    const update = {
+      title,
+      description,
+      status,
+      completedAt,
+    };
+
+    if (status === "completed" && completedAt === undefined) {
+      update.completedAt = new Date();
+    }
+    if (status && status !== "completed" && completedAt === undefined) {
+      update.completedAt = null;
+    }
+
+    const updatedTask = await Task.findByIdAndUpdate(req.params.id, update, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!updatedTask) {
       return res.status(404).json({ message: "Nhiệm vụ không tồn tại" });

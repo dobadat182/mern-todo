@@ -17,6 +17,14 @@ export const STATUS_CONFIG = {
   completed: { label: "Completed", icon: IconCircleCheck },
 };
 
+export const TASK_STATUS_OPTIONS = Object.entries(STATUS_CONFIG)
+  .filter(([value]) => value !== "all")
+  .map(([value, config]) => ({
+    value,
+    label: config.label,
+    icon: config.icon,
+  }));
+
 export const PRIORITY_CONFIG = {
   high: { label: "High", icon: IconArrowUp },
   medium: { label: "Medium", icon: IconArrowRight },

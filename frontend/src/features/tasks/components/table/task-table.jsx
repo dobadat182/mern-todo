@@ -1,4 +1,3 @@
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
@@ -15,21 +14,24 @@ function TaskTableHeader() {
   return (
     <TableHeader>
       <TableRow>
-        <TableHead className="w-10 px-3">
-          <Checkbox aria-label="Select all" />
-        </TableHead>
-        <TableHead className="w-25">Task</TableHead>
-        <TableHead>Title</TableHead>
+        <TableHead className="w-10 text-center">#</TableHead>
+        <TableHead>Task</TableHead>
         <TableHead className="w-96">Description</TableHead>
         <TableHead className="w-25">Status</TableHead>
         <TableHead className="w-25">Priority</TableHead>
-        <TableHead className="w-12" />
+        <TableHead className="w-20" />
       </TableRow>
     </TableHeader>
   );
 }
 
-export function TaskTable({ tasks, loading, onDeleteTask, rowOffset = 0 }) {
+export function TaskTable({
+  tasks,
+  loading,
+  onDeleteTask,
+  onUpdateTask,
+  rowOffset = 0,
+}) {
   return (
     <div className="overflow-hidden rounded-lg border">
       <Table>
@@ -47,6 +49,7 @@ export function TaskTable({ tasks, loading, onDeleteTask, rowOffset = 0 }) {
             <TableList
               tasks={tasks}
               onDeleteTask={onDeleteTask}
+              onUpdateTask={onUpdateTask}
               rowOffset={rowOffset}
             />
           )}

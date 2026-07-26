@@ -48,3 +48,12 @@ export async function deleteTask(id) {
     throw new Error(getErrorMessage(error, "Không thể xóa task"));
   }
 }
+
+export async function updateTask(id, payload) {
+  try {
+    const { data } = await api.put(`/${id}`, payload);
+    return normalizeTask(data);
+  } catch (error) {
+    throw new Error(getErrorMessage(error, "Không thể cập nhật task"));
+  }
+}
