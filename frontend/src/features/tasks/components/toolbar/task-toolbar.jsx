@@ -1,17 +1,20 @@
-import { CreateNewTask } from "./CreateNewTask";
-import { TaskFilters } from "./TaskFilters";
-import { ViewModeToggle } from "./ViewModeToggle";
+import { CreateNewTask } from "./create-new-task";
+import { TaskFilters } from "./task-filters";
+import { ViewModeToggle } from "./view-mode-toggle";
 
 export function TaskToolbar({
   viewMode,
   onViewModeChange,
   onCreateTask,
-  filter,
-  onFilterChange,
+  statusFilter,
+  onStatusFilterChange,
 }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <TaskFilters filter={filter} onFilterChange={onFilterChange} />
+      <TaskFilters
+        statusFilter={statusFilter}
+        onStatusFilterChange={onStatusFilterChange}
+      />
       <div className="flex items-center gap-2">
         <ViewModeToggle
           viewMode={viewMode}

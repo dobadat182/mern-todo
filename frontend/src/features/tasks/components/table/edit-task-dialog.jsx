@@ -12,9 +12,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+
+import { notify } from "../../lib/notify";
+import { TaskFormFields } from "../shared/task-form-fields";
 
 export function EditTaskDialog({ task, onUpdateTask }) {
   const [open, setOpen] = useState(false);
@@ -48,8 +48,11 @@ export function EditTaskDialog({ task, onUpdateTask }) {
         description: description || "",
       });
       setOpen(false);
+      notify.success("Cập nhật task thành công");
     } catch (err) {
-      setError(err.message || "Không thể cập nhật task");
+      const message = err.message || "Không thể cập nhật task";
+      setError(message);
+      notify.error("Cập nhật task thất bại", message);
     } finally {
       setSubmitting(false);
     }
@@ -75,33 +78,13 @@ export function EditTaskDialog({ task, onUpdateTask }) {
           onSubmit={handleSubmit}
           className="space-y-4"
         >
-          <FieldSet>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor={`edit-title-${taskId}`}>Title</FieldLabel>
-                <Input
-                  id={`edit-title-${taskId}`}
-                  name="title"
-                  defaultValue={task.title ?? ""}
-                  autoFocus
-                  required
-                  disabled={submitting}
-                />
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor={`edit-description-${taskId}`}>
-                  Description
-                </FieldLabel>
-                <Textarea
-                  id={`edit-description-${taskId}`}
-                  name="description"
-                  defaultValue={task.description ?? ""}
-                  disabled={submitting}
-                />
-              </Field>
-            </FieldGroup>
-          </FieldSet>
+          <TaskFormFields
+            idPrefix={`edit-${taskId}`}
+            defaultTitle={task.title ?? ""}
+            defaultDescription={task.description ?? ""}
+            disabled={submitting}
+            descriptionAsTextarea
+          />
 
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
 

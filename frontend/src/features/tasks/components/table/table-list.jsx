@@ -1,8 +1,8 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 
-import TableItem from "./table-item";
+import { TableItem } from "./table-item";
 
-export default function TableList({
+export function TableList({
   tasks = [],
   onDeleteTask,
   onUpdateTask,

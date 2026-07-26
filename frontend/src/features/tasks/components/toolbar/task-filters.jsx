@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-import { STATUS_CONFIG } from "../../constants";
+import { STATUS_CONFIG, STATUS_FILTER_ALL } from "../../constants";
 
 const FILTER_OPTIONS = Object.entries(STATUS_CONFIG).map(([value, config]) => ({
   value,
@@ -9,11 +9,14 @@ const FILTER_OPTIONS = Object.entries(STATUS_CONFIG).map(([value, config]) => ({
   Icon: config.icon,
 }));
 
-export function TaskFilters({ filter = "all", onFilterChange }) {
+export function TaskFilters({
+  statusFilter = STATUS_FILTER_ALL,
+  onStatusFilterChange,
+}) {
   return (
     <div className="flex flex-1 flex-wrap items-center gap-2">
       {FILTER_OPTIONS.map(({ value, label, Icon }) => {
-        const isActive = filter === value;
+        const isActive = statusFilter === value;
 
         return (
           <Button
@@ -21,7 +24,7 @@ export function TaskFilters({ filter = "all", onFilterChange }) {
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => onFilterChange(value)}
+            onClick={() => onStatusFilterChange(value)}
             className={cn(
               "gap-1.5 text-xs capitalize",
               isActive &&

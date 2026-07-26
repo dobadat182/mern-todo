@@ -1,29 +1,32 @@
 import { useState } from "react";
 
-import { useTasks } from "../hooks/useTasks";
-import { TaskHeader } from "./TaskHeader";
+import { STATUS_FILTER_ALL } from "../constants";
+import { useTasks } from "../hooks/use-tasks";
+import { TaskHeader } from "./task-header";
 import { TaskTable } from "./table/task-table";
-import { TaskToolbar } from "./toolbar/TaskToolbar";
+import { TaskToolbar } from "./toolbar/task-toolbar";
 
 export function TaskDashboard() {
   const [viewMode, setViewMode] = useState("table");
-  const [filter, setFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState(STATUS_FILTER_ALL);
   const { tasks, loading, error, createTask, deleteTask, updateTask } =
-    useTasks();
+    useTasks({ dateFilter: "all" });
 
   const filteredTasks =
-    filter === "all" ? tasks : tasks.filter((task) => task.status === filter);
+    statusFilter === STATUS_FILTER_ALL
+      ? tasks
+      : tasks.filter((task) => task.status === statusFilter);
 
   return (
-    <div className="min-h-svh bg-muted/40 px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-svh bg-transparent px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto w-full space-y-6">
         <TaskHeader />
         <TaskToolbar
           viewMode={viewMode}
           onViewModeChange={setViewMode}
           onCreateTask={createTask}
-          filter={filter}
-          onFilterChange={setFilter}
+          statusFilter={statusFilter}
+          onStatusFilterChange={setStatusFilter}
         />
 
         {error ? <p className="text-sm text-destructive">{error}</p> : null}

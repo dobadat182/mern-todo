@@ -13,6 +13,7 @@ import {
 import {
   PRIORITY_CONFIG,
   STATUS_CONFIG,
+  STATUS_FILTER_ALL,
   TASK_STATUS_OPTIONS,
 } from "../../constants";
 
@@ -27,7 +28,8 @@ export function TaskTypeBadge({ label }) {
 export function TaskStatus({ status, onStatusChange, disabled = false }) {
   const [updating, setUpdating] = useState(false);
 
-  const value = STATUS_CONFIG[status] && status !== "all" ? status : "todo";
+  const value =
+    STATUS_CONFIG[status] && status !== STATUS_FILTER_ALL ? status : "todo";
   const selectItems = TASK_STATUS_OPTIONS.map(({ value, label }) => ({
     value,
     label,

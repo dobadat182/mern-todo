@@ -11,6 +11,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+import { notify } from "../../lib/notify";
+
 export function DeleteTaskButton({ taskId, onDeleteTask }) {
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -20,8 +22,12 @@ export function DeleteTaskButton({ taskId, onDeleteTask }) {
     try {
       await onDeleteTask(taskId);
       setOpen(false);
+      notify.success("Đã xóa task");
     } catch (error) {
-      console.error("Delete failed", error);
+      notify.error(
+        "Xóa task thất bại",
+        error.message || "Không thể xóa task",
+      );
     } finally {
       setDeleting(false);
     }

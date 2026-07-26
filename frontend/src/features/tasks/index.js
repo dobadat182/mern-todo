@@ -1,1 +1,1 @@
-export { TaskDashboard } from "./components/TaskDashboard";
+export { TaskDashboard } from "./components/task-dashboard";

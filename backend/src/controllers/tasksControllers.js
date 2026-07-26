@@ -37,7 +37,7 @@ export const getAllTasks = async (req, res) => {
           activeCount: [
             {
               $match: {
-                status: { $in: ["todo", "in_progress", "active"] },
+                status: { $in: ["todo", "in_progress"] },
               },
             },
             { $count: "count" },

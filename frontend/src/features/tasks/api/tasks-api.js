@@ -11,10 +11,10 @@ export function normalizeTask(task) {
   };
 }
 
-export async function fetchTasks({ filter = "all", signal } = {}) {
+export async function fetchTasks({ dateFilter = "all", signal } = {}) {
   try {
-    const { data } = await api.get("/", {
-      params: { filter },
+    const { data } = await api.get("/tasks", {
+      params: { filter: dateFilter },
       signal,
     });
 
@@ -33,7 +33,7 @@ export async function fetchTasks({ filter = "all", signal } = {}) {
 
 export async function createTask(payload) {
   try {
-    const { data } = await api.post("/", payload);
+    const { data } = await api.post("/tasks", payload);
     return normalizeTask(data);
   } catch (error) {
     throw new Error(getErrorMessage(error, "Không thể tạo task"));
@@ -42,7 +42,7 @@ export async function createTask(payload) {
 
 export async function deleteTask(id) {
   try {
-    const { data } = await api.delete(`/${id}`);
+    const { data } = await api.delete(`/tasks/${id}`);
     return normalizeTask(data);
   } catch (error) {
     throw new Error(getErrorMessage(error, "Không thể xóa task"));
@@ -51,7 +51,7 @@ export async function deleteTask(id) {
 
 export async function updateTask(id, payload) {
   try {
-    const { data } = await api.put(`/${id}`, payload);
+    const { data } = await api.put(`/tasks/${id}`, payload);
     return normalizeTask(data);
   } catch (error) {
     throw new Error(getErrorMessage(error, "Không thể cập nhật task"));

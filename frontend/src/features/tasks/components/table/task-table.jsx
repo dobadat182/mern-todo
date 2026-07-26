@@ -1,14 +1,15 @@
+import { IconLoader2 } from "@tabler/icons-react";
+
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  TableCell,
 } from "@/components/ui/table";
 
-import TableList from "./table-list";
-import { IconLoader2 } from "@tabler/icons-react";
+import { TableList } from "./table-list";
 
 function TaskTableHeader() {
   return (

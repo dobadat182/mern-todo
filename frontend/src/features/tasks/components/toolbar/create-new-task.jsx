@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { IconPlus } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,9 +12,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { IconPlus } from "@tabler/icons-react";
+
+import { notify } from "../../lib/notify";
+import { TaskFormFields } from "../shared/task-form-fields";
 
 export function CreateNewTask({ onCreateTask }) {
   const [open, setOpen] = useState(false);
@@ -45,13 +46,14 @@ export function CreateNewTask({ onCreateTask }) {
         description: description || undefined,
       });
       event.target.reset();
+      setOpen(false);
+      notify.success("Tạo task thành công");
     } catch (err) {
-      setError(err.message || "Không thể tạo task");
+      const message = err.message || "Không thể tạo task";
+      setError(message);
+      notify.error("Tạo task thất bại", message);
     } finally {
-      setTimeout(() => {
-        setOpen(false);
-        setSubmitting(false);
-      }, 1000);
+      setSubmitting(false);
     }
   }
 
@@ -81,31 +83,7 @@ export function CreateNewTask({ onCreateTask }) {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <FieldSet>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="task-title">Title</FieldLabel>
-                <Input
-                  id="task-title"
-                  name="title"
-                  placeholder="e.g. Fix login bug"
-                  autoFocus
-                  required
-                  disabled={submitting}
-                />
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="task-description">Description</FieldLabel>
-                <Input
-                  id="task-description"
-                  name="description"
-                  placeholder="Optional details"
-                  disabled={submitting}
-                />
-              </Field>
-            </FieldGroup>
-          </FieldSet>
+          <TaskFormFields disabled={submitting} />
 
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
