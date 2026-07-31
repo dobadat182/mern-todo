@@ -8,12 +8,16 @@ export function TaskToolbar({
   onCreateTask,
   statusFilter,
   onStatusFilterChange,
+  dateFilter,
+  onDateFilterChange,
 }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <TaskFilters
         statusFilter={statusFilter}
         onStatusFilterChange={onStatusFilterChange}
+        dateFilter={dateFilter}
+        onDateFilterChange={onDateFilterChange}
       />
       <div className="flex items-center gap-2">
         <ViewModeToggle

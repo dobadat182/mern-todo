@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import { STATUS_FILTER_ALL } from "../constants";
 import { useTasks } from "../hooks/use-tasks";
 import { TaskHeader } from "./task-header";
 import { TaskTable } from "./table/task-table";
@@ -8,12 +7,22 @@ import { TaskToolbar } from "./toolbar/task-toolbar";
 
 export function TaskDashboard() {
   const [viewMode, setViewMode] = useState("table");
-  const [statusFilter, setStatusFilter] = useState(STATUS_FILTER_ALL);
-  const { tasks, loading, error, createTask, deleteTask, updateTask } =
-    useTasks({ dateFilter: "all" });
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState("all");
+
+  const {
+    tasks,
+    activeCount,
+    completeCount,
+    loading,
+    error,
+    createTask,
+    deleteTask,
+    updateTask,
+  } = useTasks({ dateFilter });
 
   const filteredTasks =
-    statusFilter === STATUS_FILTER_ALL
+    statusFilter === "all"
       ? tasks
       : tasks.filter((task) => task.status === statusFilter);
 
@@ -27,6 +36,8 @@ export function TaskDashboard() {
           onCreateTask={createTask}
           statusFilter={statusFilter}
           onStatusFilterChange={setStatusFilter}
+          dateFilter={dateFilter}
+          onDateFilterChange={setDateFilter}
         />
 
         {error ? <p className="text-sm text-destructive">{error}</p> : null}

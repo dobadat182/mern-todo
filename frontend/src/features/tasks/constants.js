@@ -8,19 +8,23 @@ import {
   IconLoader2,
 } from "@tabler/icons-react";
 
-/** UI-only filter (not a DB status) */
-export const STATUS_FILTER_ALL = "all";
-
 export const STATUS_CONFIG = {
-  [STATUS_FILTER_ALL]: { label: "All", icon: IconList },
+  all: { label: "All", icon: IconList },
   todo: { label: "Todo", icon: IconCircle },
   in_progress: { label: "In Progress", icon: IconLoader2 },
   completed: { label: "Completed", icon: IconCircleCheck },
 };
 
+export const DATE_FILTER_CONFIG = {
+  all: { label: "All" },
+  today: { label: "Today" },
+  week: { label: "Week" },
+  month: { label: "Month" },
+};
+
 /** Valid task statuses stored in DB */
 export const TASK_STATUS_OPTIONS = Object.entries(STATUS_CONFIG)
-  .filter(([value]) => value !== STATUS_FILTER_ALL)
+  .filter(([value]) => value !== "all")
   .map(([value, config]) => ({
     value,
     label: config.label,
@@ -31,4 +35,11 @@ export const PRIORITY_CONFIG = {
   high: { label: "High", icon: IconArrowUp },
   medium: { label: "Medium", icon: IconArrowRight },
   normal: { label: "Normal", icon: IconArrowRight },
+};
+
+export const DATE_FILTER_OPTIONS = {
+  today: { label: "Today" },
+  week: { label: "Week" },
+  month: { label: "Month" },
+  all: { label: "All" },
 };
