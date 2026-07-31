@@ -23,7 +23,7 @@ export function KanbanColumn({
     <section
       data-column-status={status}
       className={cn(
-        "flex min-h-125 min-w-72 flex-1 flex-col rounded-xl border bg-muted/30",
+        "flex min-h-125 max-w-96 flex-1 flex-col rounded-xl border bg-muted/30",
         isOver && "border-primary bg-primary/5 ring-2 ring-primary/20",
       )}
       // TODO: {...droppableProps} hoặc ref={setNodeRef}
