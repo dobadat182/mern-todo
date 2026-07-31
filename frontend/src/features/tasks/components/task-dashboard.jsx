@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { useTasks } from "../hooks/use-tasks";
+import { TaskKanban } from "./kanban/task-kanban";
 import { TaskHeader } from "./task-header";
 import { TaskTable } from "./table/task-table";
 import { TaskToolbar } from "./toolbar/task-toolbar";
@@ -10,16 +11,8 @@ export function TaskDashboard() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("all");
 
-  const {
-    tasks,
-    activeCount,
-    completeCount,
-    loading,
-    error,
-    createTask,
-    deleteTask,
-    updateTask,
-  } = useTasks({ dateFilter });
+  const { tasks, loading, error, createTask, deleteTask, updateTask } =
+    useTasks({ dateFilter });
 
   const filteredTasks =
     statusFilter === "all"
@@ -50,9 +43,13 @@ export function TaskDashboard() {
             onUpdateTask={updateTask}
           />
         ) : (
-          <div className="flex min-h-125 items-center justify-center rounded-xl border p-4">
-            <p className="text-muted-foreground">View mode in development...</p>
-          </div>
+          // Kanban: dùng `tasks` (đã filter theo date), không lọc status
+          // để luôn hiện đủ 3 cột — bạn tự nối DnD + onUpdateTask
+          <TaskKanban
+            tasks={tasks}
+            loading={loading}
+            onUpdateTask={updateTask}
+          />
         )}
       </div>
     </div>

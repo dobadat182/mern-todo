@@ -31,6 +31,15 @@ export const TASK_STATUS_OPTIONS = Object.entries(STATUS_CONFIG)
     icon: config.icon,
   }));
 
+/** Kanban columns = task statuses (không gồm filter UI `all`) */
+export const KANBAN_COLUMNS = TASK_STATUS_OPTIONS.map(
+  ({ value, label, icon }) => ({
+    status: value,
+    title: label,
+    icon,
+  }),
+);
+
 export const PRIORITY_CONFIG = {
   high: { label: "High", icon: IconArrowUp },
   medium: { label: "Medium", icon: IconArrowRight },
