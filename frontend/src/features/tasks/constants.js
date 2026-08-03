@@ -52,3 +52,5 @@ export const DATE_FILTER_OPTIONS = {
   month: { label: "Month" },
   all: { label: "All" },
 };
+
+export const TASKS_PER_PAGE = 4;
